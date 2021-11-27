@@ -29,12 +29,22 @@ public class GreetingsController {
 
 	@RequestMapping(value = "/listUser/{nome}", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
-	public String listAllUsers(@PathVariable String nome , int idade, String cpf) {
+	public String listAllUsers(@PathVariable String nome , int idade, String email, 
+			String cpf , String cep, String logradouro, 
+			String bairro, String cidade, String uf, String numero) {
 
 		Usuario users = new Usuario();
 		users.setNome(nome);
 		users.setIdade(idade);
+		users.setEmail(email);
 		users.setCpf(cpf);
+		users.setCep(cep);
+		users.setLogradouro(logradouro);
+		users.setBairro(bairro);
+		users.setCidade(cidade);
+		users.setUf(uf);
+		users.setNumero(numero);
+		
 		
 
 		userRepo.save(users);/* grava no banco de dados */
@@ -65,6 +75,15 @@ public class GreetingsController {
 		
 	}
 	
+	 @DeleteMapping(value = "delete")
+	  @ResponseBody
+	  public ResponseEntity<String> delete(@RequestParam Long iduser) {
+		  
+		  	userRepo.deleteById(iduser);
+			
+			return new ResponseEntity<String>("User deletado com sucesso!", HttpStatus.OK);
+	  }
+	
 	  @GetMapping(value = "listAll")
 	  @ResponseBody // retorna os dados para o corpo da resposta public
 	  public ResponseEntity<List<Usuario>> listUser() { 
@@ -84,13 +103,14 @@ public class GreetingsController {
 	  }
 	  
 	 
-	  @DeleteMapping(value = "delete")
+	  @GetMapping(value = "bucaporname")
 	  @ResponseBody
-	  public ResponseEntity<String> delete(@RequestParam Long iduser) {
+	  public ResponseEntity<List<Usuario>> bucaporname(@RequestParam(name = "name") String name) {
 		  
-		  	userRepo.deleteById(iduser);
+		 List<Usuario>  users =	 userRepo.buscaPorName(name.trim().toLowerCase());
 			
-			return new ResponseEntity<String>("User deletado com sucesso!", HttpStatus.OK);
+			return new ResponseEntity<List<Usuario>>(users, HttpStatus.OK);
 	  }
+	  
 	 
 }
