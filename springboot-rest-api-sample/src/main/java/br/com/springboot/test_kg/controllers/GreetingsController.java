@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -49,6 +50,21 @@ public class GreetingsController {
 		return new ResponseEntity<Usuario>(users, HttpStatus.CREATED);
 	}
 	
+	@PutMapping(value = "update")
+	@ResponseBody
+	public ResponseEntity<?> update(@RequestBody Usuario user) {
+		
+		if (user.getId() == null) {
+			return new ResponseEntity<String>("Id não foi informado para update.", HttpStatus.OK);
+			
+		} else {
+
+		}
+		Usuario users = userRepo.saveAndFlush(user);
+		return new ResponseEntity<Usuario>(users, HttpStatus.OK);
+		
+	}
+	
 	  @GetMapping(value = "listAll")
 	  @ResponseBody // retorna os dados para o corpo da resposta public
 	  public ResponseEntity<List<Usuario>> listUser() { 
@@ -57,6 +73,16 @@ public class GreetingsController {
 	  return new ResponseEntity<List<Usuario>>(users, HttpStatus.OK);
 	  
 	  }
+	  
+	  @GetMapping(value = "bucaruserid")
+	  @ResponseBody
+	  public ResponseEntity<Usuario> bucaruserid(@RequestParam(name = "iduser") Long iduser) {
+		  
+		  Usuario users =	 userRepo.findById(iduser).get();
+			
+			return new ResponseEntity<Usuario>(users, HttpStatus.OK);
+	  }
+	  
 	 
 	  @DeleteMapping(value = "delete")
 	  @ResponseBody
