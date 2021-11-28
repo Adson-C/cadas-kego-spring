@@ -55,6 +55,7 @@ public class GreetingsController {
 	@PostMapping(value = "save")
 	@ResponseBody
 	public ResponseEntity<Usuario> save(@RequestBody Usuario user) {
+		
 		Usuario users = userRepo.save(user);
 		
 		return new ResponseEntity<Usuario>(users, HttpStatus.CREATED);

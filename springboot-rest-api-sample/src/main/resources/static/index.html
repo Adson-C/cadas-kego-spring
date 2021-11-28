@@ -23,7 +23,7 @@
 		<div class="card-body text-secondary">
 
 
-			<form class="form-material" enctype="multipart/form-data" action="">
+			<form class="form-material" enctype="multipart/form-data" action="" id="formCadatroUser">
 
 				<input type="hidden" name="acao" id="acao" value="">
 
@@ -104,8 +104,9 @@
 				</div>
 
 			</form>
-			
 			<button type="button" onclick="salvarUsuario()" class="btn btn-primary">Salvar</button>
+			<button type="button" class="btn btn-secondary" onclick="document.getElementById('formCadatroUser').reset();">Novo</button>
+			
 
 		</div>
 
@@ -128,8 +129,42 @@ function salvarUsuario() {
 	var idade = $("#idade").val();
 	var cpf = $("#cpf").val();
 	var email = $("#email").val();
+	var cep = $("#cep").val();
+	var logradouro = $("#logradouro").val();
+    var bairro = $("#bairro").val();
+    var cidade = $("#cidade").val();
+    var uf = $("#uf").val();
+     var numero = $("#numero").val();
 	
-	alert(nome);
+     $.ajax({
+			method : "POST",
+			url : "save",
+			data : JSON.stringify({
+				id : id,
+				nome : nome,
+				idade : idade,
+				cpf : cpf,
+				email : email,
+				cep : cep,
+				nome : nome,
+				logradouro : logradouro,
+				bairro : bairro,
+				cidade : cidade,
+				uf : uf,
+				numero : numero
+				
+			}),
+			contentType : "application/json; charset=utf-8",
+			success : function(response) {
+				
+				$("#id").val(response.id);
+				alert("Salvo com sucesso!");
+			}
+		}).fail(function(xhr, status, errorThrown) {
+			alert("Erro ao Salvar : " + xhr.responseText);
+		});
+	
+	
 	}
 	
 function pesquisaCep() {
