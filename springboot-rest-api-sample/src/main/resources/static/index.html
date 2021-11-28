@@ -36,25 +36,25 @@
 
 				<div class="form-group form-default form-static-label">
 					<label class="float-label">Nome:</label> <input type="text"
-						name="nome" id="nome" class="form-control" >
+						name="nome" id="nome" class="form-control" required="required" >
 					<span class="form-bar"></span>
 				</div>
 
 				<div class="form-group form-default form-static-label">
 					<label class="float-label">Idade:</label> <input type="text"
-						name="idade" id="idade" class="form-control" >
+						name="idade" id="idade" class="form-control" required="required">
 					<span class="form-bar"></span>
 				</div>
 
 				<div class="form-group form-default form-static-label">
 					<label class="float-label">CPF:</label> <input type="text"
-						name="cpf" id="cpf" class="form-control">
+						name="cpf" id="cpf" class="form-control" required="required">
 					<span class="form-bar"></span>
 				</div>
 
 				<div class="form-group form-default form-static-label">
 					<label class="float-label">E-mail:</label> <input type="email"
-						name="email" id="email" class="form-control" 
+						name="email" id="email" class="form-control" required="required"
 						autocomplete="off"> <span class="form-bar"></span>
 				</div>
 
@@ -63,42 +63,42 @@
 				<div class="form-group form-default form-static-label">
 					<label class="float-label">Cep:</label> <input
 						onblur="pesquisaCep();" type="text" name="cep" id="cep"
-						class="form-control" autocomplete="off">
+						class="form-control" required="required" autocomplete="off">
 					<span class="form-bar"></span>
 
 				</div>
 
 				<div class="form-group form-default form-static-label">
 					<label class="float-label">Logradouro:</label> <input type="text"
-						name=logradouro id=logradouro class="form-control" autocomplete="off"> 
+						name=logradouro id=logradouro class="form-control" required="required" autocomplete="off"> 
 						 <span class="form-bar"></span>
 
 				</div>
 
 				<div class="form-group form-default form-static-label">
 					<label class="float-label">Bairro:</label> <input type="text"
-						name="bairro" id="bairro" class="form-control" 
+						name="bairro" id="bairro" class="form-control" required="required"
 						autocomplete="off"> <span class="form-bar"></span>
 
 				</div>
 
 				<div class="form-group form-default form-static-label">
 					<label class="float-label">Cidade:</label> <input type="text"
-						name="cidade" id="cidade" class="form-control"
+						name="cidade" id="cidade" class="form-control" required="required"
 						autocomplete="off"> <span class="form-bar"></span>
 
 				</div>
 
 				<div class="form-group form-default form-static-label">
 					<label class="float-label">Uf:</label> <input type="text" name="uf"
-						id="uf" class="form-control" 
+						id="uf" class="form-control" required="required"
 						autocomplete="off"> <span class="form-bar"></span>
 
 				</div>
 
 				<div class="form-group form-default form-static-label">
 					<label class="float-label">Numero:</label> <input type="text"
-						name="numero" id="numero" class="form-control"
+						name="numero" id="numero" class="form-control" required="required"
 						autocomplete="off"> <span class="form-bar"></span>
 
 				</div>
@@ -106,7 +106,47 @@
 			</form>
 			<button type="button" onclick="salvarUsuario()" class="btn btn-primary">Salvar</button>
 			<button type="button" class="btn btn-secondary" onclick="document.getElementById('formCadatroUser').reset();">Novo</button>
+			<button type="button" class="btn btn-danger"  data-bs-toggle="modal"  data-bs-target="#modalPesquisarUser">Pesquisar</button>
+		
+		
 			
+<div class="modal fade" id="modalPesquisarUser" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Pesquisa de usuário</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="nameBusca" class="col-form-label">Informe o nome:</label>
+            <input type="text" class="form-control" id="nameBusca">
+          </div>
+          <button type="button" class="btn btn-success" onclick="pesquisarUser()">Buscar</button>
+        </form>
+
+				<div style="height: 300px;overflow: scroll;">
+					<table class="table" id="tabelaresultados">
+						<thead>
+							<tr>
+								<th scope="col">ID</th>
+								<th scope="col">Nome</th>
+								<th scope="col">Editar</th>
+								<th scope="col">Delete</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+				</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 		</div>
 
@@ -184,7 +224,62 @@ function pesquisaCep() {
 	});
 }
 	
+function pesquisarUser(){
+	  var nome = $('#nameBusca').val();
+	  
+	  if (nome != null && nome.trim() != ''){
+		  
+		  
+		  $.ajax({
+				method : "GET",
+				url : "bucaporname",
+				data : "name=" + nome ,
+				success : function(response) {
+					$('#tabelaresultados > tbody > tr').remove();
+					
+					for (var i = 0; i < response.length; i++){
+						$('#tabelaresultados > tbody').append('<tr id="'+response[i].id+'"><td>'+response[i].id+'</td><td>'+response[i].nome+'</td><td><button type="button" onclick="colocarEmEdicao('+response[i].id+')" class="btn btn-primary">Ver</button><td></tr>');
+					}
+				  
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert("Erro ao buscar usuario: " + xhr.responseText);
+			});
+		  
+	  }
+}
 
+
+function colocarEmEdicao(id) {
+	  
+	  
+	  $.ajax({
+			method : "GET",
+			url : "bucaruserid",
+			data : "iduser=" + id ,
+			success : function(response) {
+
+				$("#id").val(response.id);
+				$("#nome").val(response.nome);
+				$("#idade").val(response.idade);
+				$("#cpf").val(response.cpf);
+				$("#email").val(response.email);
+				$("#cep").val(response.cep);
+				$("#logradouro").val(response.logradouro);
+			    $("#bairro").val(response.bairro);
+			    $("#cidade").val(response.cidade);
+			    $("#uf").val(response.uf);
+			     $("#numero").val(response.numero);
+				
+				
+				$('#modalPesquisarUser').modal('hide');			  
+			}
+		}).fail(function(xhr, status, errorThrown) {
+			alert("Erro ao buscar usuario por id: " + xhr.responseText);
+		});
+	  
+	  
+}
 
 
 </script>
