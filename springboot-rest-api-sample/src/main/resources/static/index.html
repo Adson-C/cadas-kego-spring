@@ -12,6 +12,15 @@
 	rel="stylesheet"
 	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
 	crossorigin="anonymous">
+	
+	<style type="text/css">
+
+html {
+    margin-left: 20%;
+    margin-right: 5%;
+    margin-top: 2%;
+}
+</style>
 
 </head>
 
@@ -174,7 +183,68 @@ function salvarUsuario() {
     var bairro = $("#bairro").val();
     var cidade = $("#cidade").val();
     var uf = $("#uf").val();
-     var numero = $("#numero").val();
+    var numero = $("#numero").val();
+     
+    if (nome == null || nome != null && nome.trim() == ''){
+		$("#nome").focus();
+		alert('Informe o nome');
+		return;
+	}
+	
+	if (idade == null || idade != null && idade.trim() == ''){
+		$("#idade").focus();
+		alert('Informe a idade');
+		return;
+	}
+	
+	if (cpf == null || cpf != null && cpf.trim() == ''){
+		$("#cpf").focus();
+		alert('Informe o CPF');
+		return;
+	}
+	
+	if (email == null || email != null && email.trim() == ''){
+		$("#email").focus();
+		alert('Informe a Email');
+		return;
+	}
+	
+	if (cep == null || cep != null && cep.trim() == ''){
+		$("#cep").focus();
+		alert('Informe o CEP');
+		return;
+	}
+	
+	if (logradouro == null || logradouro != null && logradouro.trim() == ''){
+		$("#logradouro").focus();
+		alert('Informe a logradouro');
+		return;
+	}
+	
+	if (bairro == null || bairro != null && bairro.trim() == ''){
+		$("#bairro").focus();
+		alert('Informe o bairro');
+		return;
+	}
+	
+	if (cidade == null || cidade != null && cidade.trim() == ''){
+		$("#cidade").focus();
+		alert('Informe a cidade');
+		return;
+	}
+	
+	if (uf == null || uf != null && uf.trim() == ''){
+		$("#uf").focus();
+		alert('Informe o uf');
+		return;
+	}
+	
+	if (numero == null || numero != null && numero.trim() == ''){
+		$("#numero").focus();
+		alert('Informe a numero');
+		return;
+	}
+     
 	
      $.ajax({
 			method : "POST",
@@ -302,6 +372,26 @@ function deleteUser(id){
 	}
 	
 }
+
+$("#numero").keypress(function(event) {
+	
+	return /\d/.test(String.fromCharCode(event.keyCode));
+});
+
+$("#cep").keypress(function(event) {
+	
+	return /\d/.test(String.fromCharCode(event.keyCode));
+});
+
+$("#cpf").keypress(function(event) {
+	
+	return /\d/.test(String.fromCharCode(event.keyCode));
+});
+
+$("#idade").keypress(function(event) {
+	
+	return /\d/.test(String.fromCharCode(event.keyCode));
+});
 
 
 </script>
